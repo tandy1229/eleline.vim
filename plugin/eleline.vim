@@ -2,6 +2,7 @@
 " Filename: eleline.vim
 " Author: Liu-Cheng Xu
 " URL: https://github.com/liuchengxu/eleline.vim
+" Fork: tandy1229
 " License: MIT License
 " =============================================================================
 scriptencoding utf-8
@@ -198,7 +199,7 @@ function! ElelineGitStatus() abort
     endfor
   endif
   if max(l:summary) > 0
-    return '+'.l:summary[0].' ~'.l:summary[1].' -'.l:summary[2].' '
+    return '  '.'+'.l:summary[0].' ~'.l:summary[1].' -'.l:summary[2].' '
   endif
   return ''
 endfunction
@@ -261,7 +262,7 @@ function! s:StatusLine() abort
   let l:vista = '%#ElelineVista#%{ElelineVista()}%*'
   if empty(get(b:, 'vista_nearest_method_or_function', '')) && has('nvim-0.5')
       let l:lsp = '%{ElelineNvimLsp()}'
-      let l:vista = ''
+      " let l:vista = ''
   endif
   let l:prefix = l:bufnr_winnr.l:paste
   if get(g:, 'eleline_slim', 0)
@@ -270,7 +271,7 @@ function! s:StatusLine() abort
   let l:tot = s:def('ElelineTotalBuf')
   let l:fsize = '%#ElelineFsize#%{ElelineFsize(@%)}%*'
   let l:m_r_f = '%#Eleline7# %y %*'
-  let l:pos = '%#Eleline8# '.(s:font?"\ue0a1":'').'%l/%L:%c%V '
+  let l:pos = '%#Eleline8# '.(s:font?"\uf18c ":'').'%l/%L:%c%V %P '
   let l:enc = ' %{&fenc != "" ? &fenc : &enc} | %{&bomb ? ",BOM " : ""}'
   let l:ff = '%{&ff} %*'
   let l:pct = '%#Eleline9# %P %*'
@@ -278,10 +279,8 @@ function! s:StatusLine() abort
     let l:pct = ''
     let l:scroll = '%#Eleline7#%*'.l:scroll
   endif
-  let l:common = l:paste.l:curfname.l:branch.' '.l:status.l:error.l:warning.l:tags.l:lcn.l:coc.l:lsp.l:vista
+	let l:common = l:curfname.l:branch.l:status.l:error.l:warning.l:tags.l:lcn.l:coc.l:lsp.l:vista
   return l:common.'%='.l:m_r_f.l:pos.l:scroll.l:fsize
-  " return l:prefix.l:tot.'%<'.l:fsize.l:common
-  "       \ .'%='.l:m_r_f.l:pos.l:enc.l:ff.l:pct
 endfunction
 
 let s:colors = {
