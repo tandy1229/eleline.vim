@@ -180,17 +180,25 @@ function! s:SetGitBranch(root, str) abort
 endfunction
 
 function! ElelineGitStatus() abort
-  if exists('b:sy.stats')
+  let l:summary = [0, 0, 0]
+  if exists('b:sy')
     let l:summary = b:sy.stats
   elseif exists('b:gitgutter.summary')
     let l:summary = b:gitgutter.summary
-  else
-    let l:summary = [0, 0, 0]
+  elseif exists('b:coc_git_status')
+    let hunks = get(b:, 'coc_git_status', '')
+    for val in split(hunks)
+      if val[0] is# '+'
+        let l:summary[0] = val[1:] + 0
+      elseif val[0] is# '~'
+        let l:summary[1] = val[1:] + 0
+      elseif val[0] is# '-'
+        let l:summary[2] = val[1:] + 0
+      endif
+    endfor
   endif
   if max(l:summary) > 0
-    return ' +'.l:summary[0].' ~'.l:summary[1].' -'.l:summary[2].' '
-  elseif !empty(get(b:, 'coc_git_status', ''))
-    return ' '.b:coc_git_status.' '
+    return '+'.l:summary[0].' ~'.l:summary[1].' -'.l:summary[2].' '
   endif
   return ''
 endfunction
@@ -240,7 +248,7 @@ endfunction
 function! s:StatusLine() abort
   let l:bufnr_winnr = s:def('ElelineBufnrWinnr')
   let l:paste = s:def('ElelinePaste')
-  let l:curfname = s:def('ElelineCurFname')
+  let l:curfname = s:def('ElelineCurFname').'%m%r'
   let l:branch = s:def('ElelineGitBranch')
   let l:status = s:def('ElelineGitStatus')
   let l:error = s:def('ElelineError')
@@ -261,7 +269,7 @@ function! s:StatusLine() abort
   endif
   let l:tot = s:def('ElelineTotalBuf')
   let l:fsize = '%#ElelineFsize#%{ElelineFsize(@%)}%*'
-  let l:m_r_f = '%#Eleline7# %m%r%y %*'
+  let l:m_r_f = '%#Eleline7# %y %*'
   let l:pos = '%#Eleline8# '.(s:font?"\ue0a1":'').'%l/%L:%c%V '
   let l:enc = ' %{&fenc != "" ? &fenc : &enc} | %{&bomb ? ",BOM " : ""}'
   let l:ff = '%{&ff} %*'
@@ -364,11 +372,11 @@ endfunction
 
 function! s:InsertStatuslineColor(mode) abort
   if a:mode ==# 'i'
-    call s:hi('ElelineBufnrname' , [251, s:bg+8] , [251, s:bg+8])
+    call s:hi('ElelineCurFname' , [251, 32] , [251, 89])
   elseif a:mode ==# 'r'
-    call s:hi('ElelineBufnrname' , [232, 160], [232, 160])
+    call s:hi('ElelineCurFname' , [232, 160], [232, 160])
   else
-    call s:hi('ElelineBufnrname' , [232, 178], [89, ''])
+    call s:hi('ElelineCurFname' , [232, 178], [89, ''])
   endif
 endfunction
 
@@ -397,7 +405,7 @@ augroup eleline
   autocmd!
   autocmd User GitGutter,Startified,LanguageClientStarted call s:SetStatusLine()
   " Change colors for insert mode
-  autocmd InsertLeave * call s:hi('ElelineBufnrWinnr', [232, 178], [89, ''])
+  autocmd InsertLeave * call s:hi('ElelineCurFname', [232, 140], [89, ''])
   autocmd InsertEnter,InsertChange * call s:InsertStatuslineColor(v:insertmode)
   autocmd BufWinEnter,ShellCmdPost,BufWritePost * call s:SetStatusLine()
   autocmd FileChangedShellPost,ColorScheme * call s:SetStatusLine()
