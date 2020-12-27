@@ -228,8 +228,8 @@ function! ElelineCoc() abort
 endfunction
 
 function! ElelineScroll() abort
-	if !exists("*ScrollStatus") | return '' | endif
-	return ScrollStatus()
+  if !exists("*ScrollStatus") | return '' | endif
+  return ScrollStatus()
 endfunction
 
 function! s:def(fn) abort
@@ -249,29 +249,29 @@ function! s:StatusLine() abort
   let l:lcn = '%{ElelineLCN()}'
   let l:coc = '%{ElelineCoc()}'
   let l:lsp = ''
-	let l:scroll = '%{ElelineScroll()}'
+  let l:scroll = '%{ElelineScroll()}'
   let l:vista = '%#ElelineVista#%{ElelineVista()}%*'
   if empty(get(b:, 'vista_nearest_method_or_function', '')) && has('nvim-0.5')
       let l:lsp = '%{ElelineNvimLsp()}'
       let l:vista = ''
   endif
   let l:prefix = l:bufnr_winnr.l:paste
-  let l:common = l:curfname.l:branch.l:status.l:error.l:warning.l:tags.l:lcn.l:coc.l:lsp.l:vista
   if get(g:, 'eleline_slim', 0)
     return l:prefix.'%<'.l:common
   endif
   let l:tot = s:def('ElelineTotalBuf')
   let l:fsize = '%#ElelineFsize#%{ElelineFsize(@%)}%*'
   let l:m_r_f = '%#Eleline7# %m%r%y %*'
-  let l:pos = '%#Eleline8# '.(s:font?"\ue0a1":'').'%l/%L:%c%V |'
+  let l:pos = '%#Eleline8# '.(s:font?"\ue0a1":'').'%l/%L:%c%V '
   let l:enc = ' %{&fenc != "" ? &fenc : &enc} | %{&bomb ? ",BOM " : ""}'
   let l:ff = '%{&ff} %*'
   let l:pct = '%#Eleline9# %P %*'
-	if l:scroll != ''
-		let l:pct = ''
-		let l:scroll = '%#Eleline7#%*'.l:scroll
-	endif
-	return l:common.'%='.l:m_r_f.l:pos.l:scroll.l:fsize
+  if l:scroll != ''
+    let l:pct = ''
+    let l:scroll = '%#Eleline7#%*'.l:scroll
+  endif
+  let l:common = l:paste.l:curfname.l:branch.' '.l:status.l:error.l:warning.l:tags.l:lcn.l:coc.l:lsp.l:vista
+  return l:common.'%='.l:m_r_f.l:pos.l:scroll.l:fsize
   " return l:prefix.l:tot.'%<'.l:fsize.l:common
   "       \ .'%='.l:m_r_f.l:pos.l:enc.l:ff.l:pct
 endfunction
@@ -364,11 +364,11 @@ endfunction
 
 function! s:InsertStatuslineColor(mode) abort
   if a:mode ==# 'i'
-    call s:hi('ElelineBufnrWinnr' , [251, s:bg+8] , [251, s:bg+8])
+    call s:hi('ElelineBufnrname' , [251, s:bg+8] , [251, s:bg+8])
   elseif a:mode ==# 'r'
-    call s:hi('ElelineBufnrWinnr' , [232, 160], [232, 160])
+    call s:hi('ElelineBufnrname' , [232, 160], [232, 160])
   else
-    call s:hi('ElelineBufnrWinnr' , [232, 178], [89, ''])
+    call s:hi('ElelineBufnrname' , [232, 178], [89, ''])
   endif
 endfunction
 
