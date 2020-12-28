@@ -52,7 +52,7 @@ function! ElelineGitBranch(...) abort
   endif
   let coc_branch = get(g:,'coc_git_status','')
   if exists('g:coc_git_status')
-    return g:coc_git_status
+    return '  '.g:coc_git_status
   endif
   return ''
 endfunction
@@ -70,7 +70,7 @@ function! ElelineGitStatus() abort
         let l:summary[2] = val[1:] + 0
       endif
     endfor
-	elseif exists('b:sy')
+  elseif exists('b:sy')
     let l:summary = b:sy.stats
   elseif exists('b:gitgutter.summary')
     let l:summary = b:gitgutter.summary
@@ -144,7 +144,7 @@ function! s:StatusLine() abort
   endif
   let l:fsize = '%#ElelineFsize#%{ElelineFsize(@%)}%*'
   let l:m_r_f = '%#Eleline7# %y %*'
-  let l:pos = '%#Eleline8# '.(s:font?"\uf18c ":'').'%l/%L:%c%V %P '
+  let l:pos = '%#Eleline8# '.(s:font?"":'').'%l/%L:%c%V %P '
   let l:enc = ' %{&fenc != "" ? &fenc : &enc} | %{&bomb ? ",BOM " : ""}'
   let l:ff = '%{&ff} %*'
   let l:pct = '%#Eleline9# %P %*'
@@ -152,7 +152,7 @@ function! s:StatusLine() abort
     let l:pct = ''
     let l:scroll = '%#Eleline7#%*'.l:scroll
   endif
-	let l:common = l:curfname.' '.l:branch.l:status.l:tags.l:lcn.l:coc.l:lsp.l:vista
+  let l:common = l:curfname.l:branch.l:status.l:tags.l:lcn.l:coc.l:lsp.l:vista
   return l:common.'%='.l:m_r_f.l:pos.l:scroll.l:fsize
 endfunction
 
