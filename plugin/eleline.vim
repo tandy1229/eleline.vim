@@ -153,7 +153,7 @@ let s:colors = {
             \   171 : '#d75fd7', 178 : '#ffbb7d', 184 : '#ffe920',
             \   208 : '#ff8700', 232 : '#333300', 197 : '#cc0033',
             \   214 : '#ffff66', 124 : '#af3a03', 172 : '#b57614',
-            \   32  : '#3a81c3', 89  : '#6c3163',
+            \   32  : '#57c7ff', 89  : '#6c3163',
             \
             \   235 : '#262626', 236 : '#303030', 237 : '#3a3a3a',
             \   238 : '#444444', 239 : '#4e4e4e', 240 : '#585858',
@@ -231,7 +231,7 @@ endfunction
 
 function! s:InsertStatuslineColor(mode) abort
   if a:mode ==# 'i'
-    call s:hi('ElelineCurFname' , [251, 32] , [251, 89])
+    call s:hi('ElelineCurFname' , [89, 32] , [251, 89])
   elseif a:mode ==# 'r'
     call s:hi('ElelineCurFname' , [232, 160], [232, 160])
   else
