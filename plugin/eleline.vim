@@ -40,9 +40,7 @@ function! ElelineCurFname() abort
 endfunction
 
 function! s:is_tmp_file() abort
-  return !empty(&buftype)
-        \ || index(['startify', 'gitcommit', 'defx', 'vista', 'vista_kind'], &filetype) > -1
-        \ || expand('%:p') =~# '^/tmp'
+  return index(['startify', 'vim-plug', 'gitcommit', 'defx', 'coc-explorer', 'vista', 'vista_kind'], &filetype) > -1
 endfunction
 
 " Reference: https://github.com/chemzqm/vimrc/blob/master/statusline.vim
@@ -114,6 +112,9 @@ function! ElelineCoc() abort
 endfunction
 
 function! ElelineScroll() abort
+  if s:is_tmp_file()
+    return ''
+  endif
   if !exists("*ScrollStatus")
     return ''
   endif
@@ -133,18 +134,17 @@ function! s:StatusLine() abort
   let l:lcn = '%{ElelineLCN()}'
   let l:coc = '%{ElelineCoc()}'
   let l:lsp = ''
-  let l:scroll = '%{ElelineScroll()}'
+  let l:scroll = '%{ElelineScroll()}%*'
   let l:vista = '%#ElelineVista#%{ElelineVista()}%*'
   if empty(get(b:, 'vista_nearest_method_or_function', '')) && has('nvim-0.5')
       let l:lsp = '%{ElelineNvimLsp()}'
-      " let l:vista = ''
   endif
   if get(g:, 'eleline_slim', 0)
     return l:prefix.'%<'.l:common
   endif
   let l:fsize = '%#ElelineFsize#%{ElelineFsize(@%)}%*'
-  let l:m_r_f = '%#Eleline7# %y %*'
-  let l:pos = '%#Eleline8# '.(s:font?"":'').'%l/%L:%c%V %P '
+  let l:m_r_f = '%#Eleline7# '.(s:is_tmp_file()?'':'%y %*')
+  let l:pos = '%#Eleline8# '.(s:font?"":'').(s:is_tmp_file()?'':'%l/%L:%c%V %P %*')
   let l:enc = ' %{&fenc != "" ? &fenc : &enc} | %{&bomb ? ",BOM " : ""}'
   let l:ff = '%{&ff} %*'
   let l:pct = '%#Eleline9# %P %*'
