@@ -79,13 +79,6 @@ function! ElelineGitStatus() abort
   return ''
 endfunction
 
-function! ElelineLCN() abort
-  if !exists('g:LanguageClient_loaded')
-    return ''
-  endif
-  return eleline#LanguageClientNeovim()
-endfunction
-
 function! ElelineVista() abort
   return !empty(get(b:, 'vista_nearest_method_or_function', '')) ? s:fn_icon.b:vista_nearest_method_or_function : ''
 endfunction
@@ -131,7 +124,6 @@ function! s:StatusLine() abort
   let l:branch = s:def('ElelineGitBranch')
   let l:status = s:def('ElelineGitStatus')
   let l:tags = '%{exists("b:gutentags_files") ? gutentags#statusline() : ""} '
-  let l:lcn = '%{ElelineLCN()}'
   let l:coc = '%{ElelineCoc()}'
   let l:lsp = ''
   let l:scroll = '%{ElelineScroll()}%*'
@@ -152,7 +144,7 @@ function! s:StatusLine() abort
     let l:pct = ''
     let l:scroll = '%#Eleline7#%*'.l:scroll
   endif
-  let l:common = l:curfname.l:branch.l:status.l:tags.l:lcn.l:coc.l:lsp.l:vista
+  let l:common = l:curfname.l:branch.l:status.l:tags.l:coc.l:lsp.l:vista
   return l:common.'%='.l:m_r_f.l:pos.l:scroll.l:fsize
 endfunction
 
