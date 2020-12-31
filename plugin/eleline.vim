@@ -50,7 +50,7 @@ function! ElelineGitBranch(...) abort
   endif
   let coc_branch = get(g:,'coc_git_status','')
   if exists('g:coc_git_status')
-    return '  '.g:coc_git_status
+    return g:coc_git_status
   endif
   return ''
 endfunction
@@ -144,7 +144,7 @@ function! s:StatusLine() abort
     let l:pct = ''
     let l:scroll = '%#Eleline7#%*'.l:scroll
   endif
-  let l:common = l:curfname.l:branch.l:status.l:tags.l:coc.l:lsp.l:vista
+  let l:common = l:curfname.' '.l:branch.l:status.l:tags.l:coc.l:lsp.l:vista
   return l:common.'%='.l:m_r_f.l:pos.l:scroll.l:fsize
 endfunction
 
