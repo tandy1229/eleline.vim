@@ -128,7 +128,7 @@ function! s:StatusLine() abort
   let l:branch = s:def('ElelineGitBranch')
   let l:status = s:def('ElelineGitStatus')
   let l:tags = '%{exists("b:gutentags_files") ? gutentags#statusline() : ""} '
-  let l:coc = '%{ElelineCoc()}'
+  let l:coc = s:def('ElelineCoc')
   let l:lsp = ''
   let l:scroll = '%{ElelineScroll()}%*'
   let l:vista = '%#ElelineVista#%{ElelineVista()}%*'
@@ -223,6 +223,7 @@ function! s:hi_statusline() abort
   call s:hi('ElelineGitBranch'  , [149 , s:bg+2] , [89  , '']     , 'bold' )
   call s:hi('ElelineGitStatus'  , [208 , s:bg+2] , [89  , ''])
   call s:hi('ElelineVista'      , [149 , s:bg+2] , [149 , ''])
+  call s:hi('ElelineCoc'        , [171 , s:bg+2] , [171 , '']     , 'bold' )
 
   if &background ==# 'dark'
     call s:hi('StatusLine' , [140 , s:bg+2], [140, ''] , 'none')
