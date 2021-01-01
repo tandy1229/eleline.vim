@@ -140,7 +140,7 @@ function! s:StatusLine() abort
   endif
   let l:fsize = '%#ElelineFsize#%{ElelineFsize(@%)}%*'
   let l:m_r_f = '%#Eleline7# '.(s:is_tmp_file()?'':'%y %*')
-  let l:pos = '%#Eleline8# '.(s:font?"":'').(s:is_tmp_file()?'':'%l/%L:%c%V %P %*')
+  let l:pos = '%#Eleline8# '.(s:font?"":'').(s:is_tmp_file()?'':'%P %l/%L:%c%V %*')
   let l:enc = ' %{&fenc != "" ? &fenc : &enc} | %{&bomb ? ",BOM " : ""}'
   let l:ff = '%{&ff} %*'
   let l:pct = '%#Eleline9# %P %*'
