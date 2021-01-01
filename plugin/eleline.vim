@@ -17,6 +17,10 @@ set cpoptions&vim
 let s:font = get(g:, 'eleline_powerline_fonts', get(g:, 'airline_powerline_fonts', 0))
 let s:gui = has('gui_running')
 
+function! ElelinePaste() abort
+  return &paste ? 'PASTE ' : ''
+endfunction
+
 function! ElelineFsize(f) abort
   let l:size = getfsize(expand(a:f))
   if l:size == 0 || l:size == -1 || l:size == -2
@@ -125,6 +129,7 @@ endfunction
 " https://github.com/liuchengxu/eleline.vim/wiki
 function! s:StatusLine() abort
   let l:curfname = s:def('ElelineCurFname').'%m%r'
+  let l:paste = s:def('ElelinePaste')
   let l:branch = s:def('ElelineGitBranch')
   let l:status = s:def('ElelineGitStatus')
   let l:tags = '%{exists("b:gutentags_files") ? gutentags#statusline() : ""} '
@@ -148,7 +153,7 @@ function! s:StatusLine() abort
     let l:pct = ''
     let l:scroll = '%#Eleline7#%*'.l:scroll
   endif
-  let l:common = l:curfname.' '.l:branch.l:status.l:tags.l:coc.l:lsp.l:vista
+  let l:common = l:paste.l:curfname.' '.l:branch.l:status.l:tags.l:coc.l:lsp.l:vista
   return l:common.'%='.l:m_r_f.l:pos.l:scroll.l:fsize
 endfunction
 
@@ -222,7 +227,7 @@ function! s:hi_statusline() abort
   call s:hi('ElelineCurFname'   , [171 , s:bg+4] , [171 , '']     , 'bold' )
   call s:hi('ElelineGitBranch'  , [149 , s:bg+2] , [89  , '']     , 'bold' )
   call s:hi('ElelineGitStatus'  , [208 , s:bg+2] , [89  , ''])
-  call s:hi('ElelineVista'      , [149 , s:bg+2] , [149 , ''])
+  call s:hi('ElelineVista'      , [178 , s:bg+2] , [149 , ''])
   call s:hi('ElelineCoc'        , [171 , s:bg+2] , [171 , '']     , 'bold' )
 
   if &background ==# 'dark'
