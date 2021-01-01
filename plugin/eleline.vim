@@ -223,20 +223,20 @@ function! s:hi(group, dark, light, ...) abort
 endfunction
 
 function! s:hi_statusline() abort
-  call s:hi('ElelineFsize'      , [250 , s:bg+6] , [235 , ''] )
+  call s:hi('ElelineFsize'      , [250 , s:bg+3] , [235 , ''] )
   call s:hi('ElelineCurFname'   , [171 , s:bg+4] , [171 , '']     , 'bold' )
-  call s:hi('ElelineGitBranch'  , [149 , s:bg+2] , [89  , '']     , 'bold' )
-  call s:hi('ElelineGitStatus'  , [208 , s:bg+2] , [89  , ''])
-  call s:hi('ElelineVista'      , [178 , s:bg+2] , [149 , ''])
-  call s:hi('ElelineCoc'        , [171 , s:bg+2] , [171 , '']     , 'bold' )
+  call s:hi('ElelineGitBranch'  , [149 , s:bg] , [89  , '']     , 'bold' )
+  call s:hi('ElelineGitStatus'  , [208 , s:bg] , [89  , ''])
+  call s:hi('ElelineVista'      , [178 , s:bg] , [149 , ''])
+  call s:hi('ElelineCoc'        , [171 , s:bg] , [171 , '']     , 'bold' )
 
   if &background ==# 'dark'
-    call s:hi('StatusLine' , [140 , s:bg+2], [140, ''] , 'none')
+    call s:hi('StatusLine' , [140 , s:bg], [140, ''] , 'none')
   endif
 
-  call s:hi('Eleline7'      , [249 , s:bg+3], [237, ''] )
-  call s:hi('Eleline8'      , [250 , s:bg+4], [238, ''] )
-  call s:hi('Eleline9'      , [251 , s:bg+5], [239, ''] )
+  call s:hi('Eleline7'      , [249 , s:bg+1], [237, ''] )
+  call s:hi('Eleline8'      , [250 , s:bg+2], [238, ''] )
+  call s:hi('Eleline9'      , [251 , s:bg+6], [239, ''] )
 endfunction
 
 function! s:InsertStatuslineColor(mode) abort
