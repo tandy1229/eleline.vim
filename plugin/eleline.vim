@@ -15,7 +15,6 @@ let s:save_cpo = &cpoptions
 set cpoptions&vim
 
 let s:font = get(g:, 'eleline_powerline_fonts', get(g:, 'airline_powerline_fonts', 0))
-let s:fn_icon = s:font ? get(g:, 'eleline_function_icon', " \uf794 ") : ''
 let s:gui = has('gui_running')
 
 function! ElelineFsize(f) abort
@@ -40,6 +39,11 @@ function! ElelineCurFname() abort
 endfunction
 
 function! s:is_tmp_file() abort
+  if !empty(&buftype) | return 1 | endif
+  if &previewwindow | return 1 | endif
+  let filename = expand('%:p')
+  if filename =~# '^/tmp' | return 1 | endif
+  if filename =~# '^fugitive:' | return 1 | endif
   return index(['startify', 'vim-plug', 'gitcommit', 'defx', 'coc-explorer', 'vista', 'vista_kind'], &filetype) > -1
 endfunction
 
@@ -80,7 +84,7 @@ function! ElelineGitStatus() abort
 endfunction
 
 function! ElelineVista() abort
-  return !empty(get(b:, 'vista_nearest_method_or_function', '')) ? s:fn_icon.b:vista_nearest_method_or_function : ''
+  return !empty(get(b:, 'coc_current_function', '')) ? b:coc_current_function : ''
 endfunction
 
 function! ElelineNvimLsp() abort
