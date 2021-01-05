@@ -131,7 +131,7 @@ endfunction
 
 " https://github.com/liuchengxu/eleline.vim/wiki
 function! s:StatusLine() abort
-  let l:curfname = s:def('ElelineCurFname').'%m'
+  let l:curfname = s:def('ElelineCurFname').'%m '
   let l:paste = s:def('ElelinePaste')
   let l:branch = s:def('ElelineGitBranch')
   let l:status = s:def('ElelineGitStatus')
@@ -156,7 +156,7 @@ function! s:StatusLine() abort
     let l:pct = ''
     let l:scroll = '%#Eleline7#%*'.l:scroll.'%*'
   endif
-  let l:common = l:paste.l:curfname.' '.l:branch.' %<'.l:status.l:tags.l:coc.l:lsp.l:vista
+  let l:common = l:paste.l:curfname.l:branch.' %<'.l:status.l:tags.l:coc.l:lsp.l:vista
   return l:common.'%='.l:m_r_f.l:pos.l:scroll.l:fsize
 endfunction
 
