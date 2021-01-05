@@ -76,11 +76,7 @@ endfunction
 
 function! ElelineCurFname() abort
   let l:mode = get(a:, '1', s:modes[mode()])
-  if !&readonly
-    return &filetype ==# 'startify' ? '' : '  '.l:mode.' '
-    else
-    return &filetype ==# 'startify' ? '' : '  '.l:mode.'  '
-  endif
+  return &filetype ==# 'startify' ? '' : '  '.l:mode.' '
 endfunction
 
 function! s:is_tmp_file() abort
@@ -97,6 +93,13 @@ function! ElelineInfo() abort
     return ''
   endif
   return l:info
+endfunction
+
+function! ElelineLock() abort
+  if !&readonly
+    return ''
+  endif
+  return ''
 endfunction
 
 " Reference: https://github.com/chemzqm/vimrc/blob/master/statusline.vim
@@ -179,6 +182,7 @@ function! s:StatusLine() abort
   let l:curfname = s:def('ElelineCurFname').'%m '
   let l:paste = s:def('ElelinePaste')
   let l:info = s:def('ElelineInfo').' '
+  let l:lock = s:def('ElelineLock')
   let l:branch = s:def('ElelineGitBranch')
   let l:status = s:def('ElelineGitStatus')
   let l:tags = '%{exists("b:gutentags_files") ? gutentags#statusline() : ""} '
@@ -202,7 +206,7 @@ function! s:StatusLine() abort
     let l:pct = ''
     let l:scroll = '%#Eleline7#%*'.l:scroll.'%*'
   endif
-  let l:common = l:paste.l:curfname.l:branch.' %<'.l:status.l:tags.l:coc.l:info.l:lsp.l:vista
+  let l:common = l:paste.l:curfname.l:branch.' %<'.l:status.l:tags.l:coc.l:info.l:lock.l:lsp.l:vista
   return l:common.'%='.l:m_r_f.l:pos.l:scroll.l:fsize
 endfunction
 
@@ -276,6 +280,7 @@ function! s:hi_statusline() abort
   call s:hi('ElelineCurFname'   , [171 , s:bg+4] , [171 , '']     , 'bold' )
   call s:hi('ElelineGitBranch'  , [149 , s:bg] , [89  , '']     , 'bold' )
   call s:hi('ElelineGitStatus'  , [208 , s:bg] , [89  , ''])
+  call s:hi('ElelineLock'       , [160 , s:bg] , [89  , ''])
   call s:hi('ElelineVista'      , [178 , s:bg] , [149 , ''])
   call s:hi('ElelineCoc'        , [171 , s:bg] , [171 , '']     , 'bold' )
 
