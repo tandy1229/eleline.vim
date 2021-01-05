@@ -17,6 +17,42 @@ set cpoptions&vim
 let s:font = get(g:, 'eleline_powerline_fonts', get(g:, 'airline_powerline_fonts', 0))
 let s:gui = has('gui_running')
 
+" Reference: https://github.com/iamcco/statusline.vim
+let s:modes = {
+    \   'n':        'NORMAL',
+    \   'no':       'NORMAl',
+    \   'nov':      'NORMAL',
+    \   'noV':      'NORMAL',
+    \   'noCTRL-V': 'NORMAL',
+    \   'no':     'NORMAL',
+    \   'niI':      'NORMAL',
+    \   'niR':      'NORMAL',
+    \   'niV':      'NORMAL',
+    \   'v':        'VISUAL',
+    \   'V':        'VISUAL',
+    \   '':       'VISUAL',
+    \   'CTRL-V':   'VISUAL',
+    \   's':        'SELECT',
+    \   'S':        'SELECT',
+    \   'CTRL-S':   'SELECT',
+    \   '':       'SELECT',
+    \   'i':        'INSERT',
+    \   'ic':       'INSERT',
+    \   'ix':       'INSERT',
+    \   'R':        'REPLACE',
+    \   'Rc':       'REPLACE',
+    \   'Rv':       'REPLACE',
+    \   'Rx':       'REPLACE',
+    \   'c':        'COMMAND',
+    \   'cv':       'COMMAND',
+    \   'ce':       'COMMAND',
+    \   'r':        'PROMPT',
+    \   'rm':       'PROMPT',
+    \   'r?':       'PROMPT',
+    \   '!':        'SHELL',
+    \   't':        'TERMINAL'
+    \ }
+
 function! ElelinePaste() abort
   return &paste ? 'PASTE ' : ''
 endfunction
@@ -39,10 +75,11 @@ function! ElelineFsize(f) abort
 endfunction
 
 function! ElelineCurFname() abort
+  let l:mode = get(a:, '1', s:modes[mode()])
   if !&readonly
-    return &filetype ==# 'startify' ? '' : '  '.expand('%:p:t').' '
+    return &filetype ==# 'startify' ? '' : '  '.l:mode.' '
     else
-    return &filetype ==# 'startify' ? '' : '  '.expand('%:p:t').'  '
+    return &filetype ==# 'startify' ? '' : '  '.l:mode.'  '
   endif
 endfunction
 
@@ -52,6 +89,14 @@ function! s:is_tmp_file() abort
   if filename =~# '^/tmp' | return 1 | endif
   if filename =~# '^fugitive:' | return 1 | endif
   return index(['startify', 'vim-plug', 'gitcommit', 'defx', 'coc-explorer', 'vista', 'vista_kind'], &filetype) > -1
+endfunction
+
+function! ElelineInfo() abort
+  let l:info = substitute(fnamemodify(expand('%:p'), ':p'), '\v^.*\/([^ \/]+\/[^ \/]+)$' , '\1', 'i')
+  if s:is_tmp_file()
+    return ''
+  endif
+  return l:info
 endfunction
 
 " Reference: https://github.com/chemzqm/vimrc/blob/master/statusline.vim
@@ -133,6 +178,7 @@ endfunction
 function! s:StatusLine() abort
   let l:curfname = s:def('ElelineCurFname').'%m '
   let l:paste = s:def('ElelinePaste')
+  let l:info = s:def('ElelineInfo').' '
   let l:branch = s:def('ElelineGitBranch')
   let l:status = s:def('ElelineGitStatus')
   let l:tags = '%{exists("b:gutentags_files") ? gutentags#statusline() : ""} '
@@ -156,7 +202,7 @@ function! s:StatusLine() abort
     let l:pct = ''
     let l:scroll = '%#Eleline7#%*'.l:scroll.'%*'
   endif
-  let l:common = l:paste.l:curfname.l:branch.' %<'.l:status.l:tags.l:coc.l:lsp.l:vista
+  let l:common = l:paste.l:curfname.l:branch.' %<'.l:status.l:tags.l:coc.l:info.l:lsp.l:vista
   return l:common.'%='.l:m_r_f.l:pos.l:scroll.l:fsize
 endfunction
 
