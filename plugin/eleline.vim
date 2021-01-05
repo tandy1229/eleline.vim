@@ -43,7 +43,6 @@ function! ElelineCurFname() abort
 endfunction
 
 function! s:is_tmp_file() abort
-  if !empty(&buftype) | return 1 | endif
   if &previewwindow | return 1 | endif
   let filename = expand('%:p')
   if filename =~# '^/tmp' | return 1 | endif
@@ -82,7 +81,7 @@ function! ElelineGitStatus() abort
     let l:summary = b:gitgutter.summary
   endif
   if max(l:summary) > 0
-    return '  '.'+'.l:summary[0].' ~'.l:summary[1].' -'.l:summary[2].' '
+    return '+'.l:summary[0].' ~'.l:summary[1].' -'.l:summary[2].' '
   endif
   return ''
 endfunction
@@ -153,7 +152,7 @@ function! s:StatusLine() abort
     let l:pct = ''
     let l:scroll = '%#Eleline7#%*'.l:scroll
   endif
-  let l:common = l:paste.l:curfname.' '.l:branch.l:status.l:tags.l:coc.l:lsp.l:vista
+  let l:common = l:paste.l:curfname.' '.l:branch.' %<'.l:status.l:tags.l:coc.l:lsp.l:vista
   return l:common.'%='.l:m_r_f.l:pos.l:scroll.l:fsize
 endfunction
 
