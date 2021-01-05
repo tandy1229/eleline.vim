@@ -39,7 +39,11 @@ function! ElelineFsize(f) abort
 endfunction
 
 function! ElelineCurFname() abort
-  return &filetype ==# 'startify' ? '' : '  '.expand('%:p:t').' '
+  if !&readonly
+    return &filetype ==# 'startify' ? '' : '  '.expand('%:p:t').' '
+    else
+    return &filetype ==# 'startify' ? '' : '  '.expand('%:p:t').'  '
+  endif
 endfunction
 
 function! s:is_tmp_file() abort
@@ -127,7 +131,7 @@ endfunction
 
 " https://github.com/liuchengxu/eleline.vim/wiki
 function! s:StatusLine() abort
-  let l:curfname = s:def('ElelineCurFname').'%m%r'
+  let l:curfname = s:def('ElelineCurFname').'%m'
   let l:paste = s:def('ElelinePaste')
   let l:branch = s:def('ElelineGitBranch')
   let l:status = s:def('ElelineGitStatus')
