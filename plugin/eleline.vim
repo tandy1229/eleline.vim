@@ -74,8 +74,16 @@ function! ElelineFsize(f) abort
   return '  '.size.' '
 endfunction
 
+function! ElelineQf() abort
+  return w:quickfix_title
+endfunction
+
 function! ElelineCurFname() abort
-  let l:mode = get(a:, '1', s:modes[mode()])
+  if &filetype == 'qf'
+    let l:mode = 'QuickFix'
+  else
+    let l:mode = get(a:, '1', s:modes[mode()])
+  endif
   return &filetype ==# 'startify' ? '' : '  '.l:mode.' '
 endfunction
 
@@ -181,7 +189,7 @@ endfunction
 function! s:StatusLine() abort
   let l:curfname = s:def('ElelineCurFname').'%m '
   let l:paste = s:def('ElelinePaste')
-  let l:info = s:def('ElelineInfo').' '
+  let l:info = '%#Eleline10#%{ElelineInfo()}'.' '
   let l:lock = s:def('ElelineLock')
   let l:branch = s:def('ElelineGitBranch')
   let l:status = s:def('ElelineGitStatus')
@@ -291,6 +299,7 @@ function! s:hi_statusline() abort
   call s:hi('Eleline7'      , [249 , s:bg+1], [237, ''] )
   call s:hi('Eleline8'      , [250 , s:bg+2], [238, ''] )
   call s:hi('Eleline9'      , [251 , s:bg+6], [239, ''] )
+  call s:hi('Eleline10'     , [140 , s:bg], [239, ''] )
 endfunction
 
 function! s:InsertStatuslineColor(mode) abort
@@ -301,6 +310,12 @@ function! s:InsertStatuslineColor(mode) abort
   else
     call s:hi('ElelineCurFname' , [232, 178], [89, ''])
   endif
+endfunction
+
+function! s:qf() abort
+  let l:bufnr_winnr = s:def('ElelineCurFname')
+  let l:quick_fix = '%#Eleline10# %{ElelineQf()} %l/%L %p%*' 
+  let &l:statusline = l:bufnr_winnr.l:quick_fix
 endfunction
 
 " Note that the "%!" expression is evaluated in the context of the
@@ -328,6 +343,7 @@ augroup eleline
   autocmd BufWinEnter,ShellCmdPost,BufWritePost * call s:SetStatusLine()
   autocmd FileChangedShellPost,ColorScheme * call s:SetStatusLine()
   autocmd FileReadPre,ShellCmdPost,FileWritePost * call s:SetStatusLine()
+  autocmd FileType qf call s:qf()
 augroup END
 
 let &cpoptions = s:save_cpo
