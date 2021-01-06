@@ -78,21 +78,23 @@ function! ElelineQf() abort
   return w:quickfix_title
 endfunction
 
-function! ElelineCurFname() abort
-  if &filetype == 'qf'
-    let l:mode = 'QuickFix'
-  else
-    let l:mode = get(a:, '1', s:modes[mode()])
-  endif
-  return &filetype ==# 'startify' ? '' : '  '.l:mode.' '
-endfunction
-
 function! s:is_tmp_file() abort
   if &previewwindow | return 1 | endif
   let filename = expand('%:p')
   if filename =~# '^/tmp' | return 1 | endif
   if filename =~# '^fugitive:' | return 1 | endif
   return index(['startify', 'vim-plug', 'gitcommit', 'defx', 'coc-explorer', 'vista', 'vista_kind'], &filetype) > -1
+endfunction
+
+function! ElelineCurFname() abort
+  if &filetype == 'qf'
+    let l:mode = 'QuickFix'
+  elseif s:is_tmp_file()
+    let l:mode = expand('%f')
+  else
+    let l:mode = get(a:, '1', s:modes[mode()])
+  endif
+  return &filetype ==# 'startify' ? '' : '  '.l:mode.' '
 endfunction
 
 function! ElelineInfo() abort
