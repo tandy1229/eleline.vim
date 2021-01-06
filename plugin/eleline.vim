@@ -99,7 +99,7 @@ function! ElelineLock() abort
   if !&readonly
     return ''
   endif
-  return ''
+  return '🔒 '
 endfunction
 
 " Reference: https://github.com/chemzqm/vimrc/blob/master/statusline.vim
