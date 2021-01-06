@@ -207,13 +207,8 @@ function! s:StatusLine() abort
   let l:fsize = '%#ElelineFsize#%{ElelineFsize(@%)}%*'
   let l:m_r_f = '%#Eleline7# '.(s:is_tmp_file()?'':'%y %*')
   let l:pos = '%#Eleline8# '.(s:font?"":'').(s:is_tmp_file()?'':'%P %l/%L:%c%V %*')
-  let l:enc = ' %{&fenc != "" ? &fenc : &enc} | %{&bomb ? ",BOM " : ""}'
-  let l:ff = '%{&ff} %*'
-  let l:pct = '%#Eleline9# %P %*'
-  if l:scroll != ''
-    let l:pct = ''
-    let l:scroll = '%#Eleline7#%*'.l:scroll
-  endif
+  let l:enc = ' %{&fenc != "" ? &fenc : &enc} %{&bomb ? ",BOM " : ""}'
+  let l:ff = ' %{&ff} %*'
   let l:common = l:paste.l:curfname.l:branch.' %<'.l:status.l:tags.l:coc.l:info.l:lock.l:lsp.l:vista
   return l:common.'%='.l:m_r_f.l:pos.l:scroll.l:fsize
 endfunction
@@ -298,8 +293,7 @@ function! s:hi_statusline() abort
 
   call s:hi('Eleline7'      , [249 , s:bg+1], [237, ''] )
   call s:hi('Eleline8'      , [250 , s:bg+2], [238, ''] )
-  call s:hi('Eleline9'      , [251 , s:bg+6], [239, ''] )
-  call s:hi('Eleline10'     , [140 , s:bg], [140 , ''] )
+  call s:hi('Eleline9'     , [140 , s:bg], [140 , ''] )
 endfunction
 
 function! s:InsertStatuslineColor(mode) abort
@@ -314,7 +308,7 @@ endfunction
 
 function! s:qf() abort
   let l:bufnr_winnr = s:def('ElelineCurFname')
-  let l:quick_fix = '%#Eleline10# %{ElelineQf()} %l/%L %p%*' 
+  let l:quick_fix = '%#Eleline9# %{ElelineQf()} %l/%L %p%*' 
   let &l:statusline = l:bufnr_winnr.l:quick_fix
 endfunction
 
