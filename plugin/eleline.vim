@@ -212,7 +212,7 @@ function! s:StatusLine() abort
   let l:pct = '%#Eleline9# %P %*'
   if l:scroll != ''
     let l:pct = ''
-    let l:scroll = '%#Eleline7#%*'.l:scroll.'%*'
+    let l:scroll = '%#Eleline7#%*'.l:scroll
   endif
   let l:common = l:paste.l:curfname.l:branch.' %<'.l:status.l:tags.l:coc.l:info.l:lock.l:lsp.l:vista
   return l:common.'%='.l:m_r_f.l:pos.l:scroll.l:fsize
