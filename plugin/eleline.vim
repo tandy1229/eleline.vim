@@ -299,7 +299,7 @@ function! s:hi_statusline() abort
   call s:hi('Eleline7'      , [249 , s:bg+1], [237, ''] )
   call s:hi('Eleline8'      , [250 , s:bg+2], [238, ''] )
   call s:hi('Eleline9'      , [251 , s:bg+6], [239, ''] )
-  call s:hi('Eleline10'     , [140 , s:bg], [239, ''] )
+  call s:hi('Eleline10'     , [140 , s:bg], [140 , ''] )
 endfunction
 
 function! s:InsertStatuslineColor(mode) abort
