@@ -83,7 +83,7 @@ function! s:is_tmp_file() abort
   let filename = expand('%:p')
   if filename =~# '^/tmp' | return 1 | endif
   if filename =~# '^fugitive:' | return 1 | endif
-  return index(['startify', 'vim-plug', 'gitcommit', 'defx', 'coc-explorer', 'vista', 'vista_kind'], &filetype) > -1
+  return index(['startify', 'GV', 'agit', 'agit_diff', 'agit_stat', 'gitcommit', 'defx', 'coc-explorer', 'vista', 'vista_kind'], &filetype) > -1
 endfunction
 
 function! ElelineCurFname() abort
