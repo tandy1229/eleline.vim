@@ -191,7 +191,7 @@ endfunction
 function! s:StatusLine() abort
   let l:curfname = s:def('ElelineCurFname').'%m '
   let l:paste = s:def('ElelinePaste')
-  let l:info = '%#Eleline10#%{ElelineInfo()}'.' '
+  let l:info = '%#Eleline9#%{ElelineInfo()}'.' '
   let l:lock = s:def('ElelineLock')
   let l:branch = s:def('ElelineGitBranch')
   let l:status = s:def('ElelineGitStatus')
