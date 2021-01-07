@@ -83,7 +83,7 @@ function! s:is_tmp_file() abort
   let filename = expand('%:p')
   if filename =~# '^/tmp' | return 1 | endif
   if filename =~# '^fugitive:' | return 1 | endif
-  return index(['startify', 'GV', 'agit', 'agit_diff', 'agit_stat', 'gitcommit', 'defx', 'coc-explorer', 'vista', 'vista_kind'], &filetype) > -1
+  return index(['startify', 'vim-plug', 'ctrlsf', 'tsplayground', 'GV', 'agit', 'agit_diff', 'agit_stat', 'gitcommit', 'defx', 'coc-explorer', 'vista', 'vista_kind'], &filetype) > -1
 endfunction
 
 function! ElelineCurFname() abort
@@ -295,7 +295,7 @@ function! s:hi_statusline() abort
 
   call s:hi('Eleline7'      , [249 , s:bg+1], [237, ''] )
   call s:hi('Eleline8'      , [250 , s:bg+2], [238, ''] )
-  call s:hi('Eleline9'     , [140 , s:bg], [140 , ''] )
+  call s:hi('Eleline9'      , [140 , s:bg], [140 , ''] )
 endfunction
 
 function! s:InsertStatuslineColor(mode) abort
