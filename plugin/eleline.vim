@@ -320,7 +320,7 @@ endfunction
 function! s:SetStatusLine(...) abort
   call ElelineGitBranch(1)
   let &l:statusline = s:StatusLine()
-  " User-defined highlightings shoule be put after colorscheme command.
+  " User-defined highlightings should be put after colorscheme command.
   call s:hi_statusline()
 endfunction
 
