@@ -53,10 +53,6 @@ let s:modes = {
     \   't':        'TERMINAL'
     \ }
 
-function! ElelinePaste() abort
-  return &paste ? 'PASTE ' : ''
-endfunction
-
 function! ElelineFsize(f) abort
   let l:size = getfsize(expand(a:f))
   if l:size == 0 || l:size == -1 || l:size == -2
@@ -91,6 +87,10 @@ function! ElelineCurFname() abort
     let l:mode = 'QuickFix'
   elseif s:is_tmp_file()
     let l:mode = expand('%f')
+  elseif &spell == 1
+    let l:mode = get(a:, '1', s:modes[mode()]).' | SPELL'
+  elseif &paste == 1
+    let l:mode = get(a:, '1', s:modes[mode()]).' | PASTE'
   else
     let l:mode = get(a:, '1', s:modes[mode()])
   endif
@@ -190,7 +190,6 @@ endfunction
 " https://github.com/liuchengxu/eleline.vim/wiki
 function! s:StatusLine() abort
   let l:curfname = s:def('ElelineCurFname').'%m '
-  let l:paste = s:def('ElelinePaste')
   let l:info = '%#Eleline9#%{ElelineInfo()}'.' '
   let l:lock = s:def('ElelineLock')
   let l:branch = s:def('ElelineGitBranch')
@@ -211,7 +210,7 @@ function! s:StatusLine() abort
   let l:pos = '%#Eleline8# '.(s:font?"":'').(s:is_tmp_file()?'':'%P %l/%L:%c%V %*')
   let l:enc = ' %{&fenc != "" ? &fenc : &enc} %{&bomb ? ",BOM " : ""}'
   let l:ff = ' %{&ff} %*'
-  let l:common = l:paste.l:curfname.l:branch.' %<'.l:status.l:tags.l:coc.l:info.l:lock.l:lsp.l:vista
+  let l:common = l:curfname.l:branch.' %<'.l:status.l:tags.l:coc.l:info.l:lock.l:lsp.l:vista
   return l:common.'%='.l:m_r_f.l:pos.l:scroll.l:fsize
 endfunction
 
