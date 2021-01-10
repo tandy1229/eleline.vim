@@ -75,10 +75,12 @@ function! ElelineQf() abort
 endfunction
 
 function! s:is_tmp_file() abort
-  if &previewwindow | return 1 | endif
   let filename = expand('%:p')
+  let shortfilename = expand('%f')
+  if &previewwindow | return 1 | endif
   if filename =~# '^/tmp' | return 1 | endif
   if filename =~# '^fugitive:' | return 1 | endif
+  if shortfilename == '[Command Line]' | return 1 | endif
   return index(['startify', 'vim-plug', 'ctrlsf', 'tsplayground', 'GV', 'agit', 'agit_diff', 'agit_stat', 'gitcommit', 'defx', 'coc-explorer', 'vista', 'vista_kind'], &filetype) > -1
 endfunction
 
