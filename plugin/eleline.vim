@@ -77,6 +77,7 @@ endfunction
 function! s:is_tmp_file() abort
   let filename = expand('%:p')
   let shortfilename = expand('%f')
+  if !empty(&buftype) | return 1 | endif
   if &previewwindow | return 1 | endif
   if filename =~# '^/tmp' | return 1 | endif
   if filename =~# '^fugitive:' | return 1 | endif
@@ -108,7 +109,9 @@ function! ElelineInfo() abort
 endfunction
 
 function! ElelineLock() abort
-  if !&readonly
+  if s:is_tmp_file()
+    return ''
+  elseif !&readonly
     return ''
   endif
   return '🔒 '
@@ -207,9 +210,9 @@ function! s:StatusLine() abort
   if get(g:, 'eleline_slim', 0)
     return l:prefix.'%<'.l:common
   endif
-  let l:fsize = '%#ElelineFsize#%{ElelineFsize(@%)}%*'
-  let l:m_r_f = '%#Eleline7# '.(s:is_tmp_file()?'':'%y %*')
-  let l:pos = '%#Eleline8# '.(s:font?"":'').(s:is_tmp_file()?'':'%P %l/%L:%c%V %*')
+  let l:fsize = '%#ElelineFsize#'.(s:is_tmp_file()?'':'%{ElelineFsize(@%)}%*')
+  let l:m_r_f = '%#Eleline7#'.(s:is_tmp_file()?'':' %y %*')
+  let l:pos = '%#Eleline8#'.(s:font?"":'').' %P %l/%L:%c%V %*'
   let l:enc = ' %{&fenc != "" ? &fenc : &enc} %{&bomb ? ",BOM " : ""}'
   let l:ff = ' %{&ff} %*'
   let l:common = l:curfname.l:branch.' %<'.l:status.l:tags.l:coc.l:info.l:lock.l:lsp.l:vista
